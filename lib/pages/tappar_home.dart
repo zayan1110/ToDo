@@ -32,17 +32,7 @@ class _TapparHomeState extends State<TapparHome>
       backgroundColor: Theme.of(context).colorScheme.secondary,
       appBar: AppBar(
         toolbarHeight: 200,
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(
-        //       Icons.settings,
-        //       color: Theme.of(context).colorScheme.background,
-        //     ),
-        //     onPressed: () {
-        //       Navigator.of(context).pushNamed('/settingPage');
-        //     },
-        //   ),
-        // ],
+       
         backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
