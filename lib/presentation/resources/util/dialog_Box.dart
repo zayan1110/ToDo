@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/pages/util/custom_button.dart';
+import 'custom_button.dart';
 
 class DialogBox extends StatelessWidget {
   final controller;
@@ -17,23 +17,23 @@ class DialogBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.secondary,
-      content: Container(
+      content: SizedBox(
         height: 120,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextField(
               controller: controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Add a new task',
+                hintText: 'Add a new TasksPage',
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 custombutton(text: 'Save', onPressed: onSave),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 custombutton(text: 'cancel', onPressed: onCancel)

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+
 class ToDoTile extends StatefulWidget {
-  final String TaskName;
-  final bool taskcombleted;
+  final String TasksPageName;
+  final bool TasksPagecombleted;
   final Function(bool?) onChanged;
   final Function() deleteFunction;
 
-  ToDoTile({
+  const ToDoTile({
     super.key,
-    required this.TaskName,
-    required this.taskcombleted,
+    required this.TasksPageName,
+    required this.TasksPagecombleted,
     required this.onChanged,
     required this.deleteFunction,
   });
@@ -18,57 +19,53 @@ class ToDoTile extends StatefulWidget {
 }
 
 class _ToDoTileState extends State<ToDoTile> {
-  bool _isTaskCompleted = false;
+  bool _isTasksPageCompleted = false;
 
   @override
   void initState() {
     super.initState();
-    _isTaskCompleted = widget.taskcombleted;
+    _isTasksPageCompleted = widget.TasksPagecombleted;
   }
 
-  void _toggleTaskCompletion() {
+  void _toggleTasksPageCompletion() {
     setState(() {
-      _isTaskCompleted = !_isTaskCompleted;
-      widget.onChanged(_isTaskCompleted);
+      _isTasksPageCompleted = !_isTasksPageCompleted;
+      widget.onChanged(_isTasksPageCompleted);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 8, right: 8, top: 15, bottom: 5.0),
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 15, bottom: 5.0),
       child: Container(
         height: 800,
         width: 1000,
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(12)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              onTap: _toggleTaskCompletion,
+              onTap: _toggleTasksPageCompletion,
               child: Text(
-                widget.TaskName,
+                widget.TasksPageName,
                 style: TextStyle(
                   color: Colors.black,
-                  decoration: _isTaskCompleted
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
+                  decoration: _isTasksPageCompleted ? TextDecoration.lineThrough : TextDecoration.none,
                 ),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "date",
                   style: TextStyle(color: Colors.black),
                 ),
                 IconButton(
                   onPressed: widget.deleteFunction,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete,
                     color: Colors.black,
                     size: 25.0,
