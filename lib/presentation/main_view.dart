@@ -9,7 +9,7 @@ class MainView extends StatefulWidget {
   const MainView({super.key});
 
   @override
-  _MainViewState createState() => _MainViewState();
+  State<MainView> createState() => _MainViewState();
 }
 
 class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin {

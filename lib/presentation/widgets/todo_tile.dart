@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ToDoTile extends StatefulWidget {
-  final String TasksPageName;
-  final bool TasksPagecombleted;
+  final String tasksPageName;
+  final bool tasksPageCompleted;
   final Function(bool?) onChanged;
   final Function() deleteFunction;
 
-  const ToDoTile({
-    super.key,
-    required this.TasksPageName,
-    required this.TasksPagecombleted,
-    required this.onChanged,
-    required this.deleteFunction,
-  });
+  const ToDoTile({super.key, required this.onChanged, required this.tasksPageName, required this.deleteFunction, required this.tasksPageCompleted});
 
   @override
-  _ToDoTileState createState() => _ToDoTileState();
+  State<ToDoTile> createState() => _ToDoTileState();
 }
 
 class _ToDoTileState extends State<ToDoTile> {
@@ -24,7 +18,7 @@ class _ToDoTileState extends State<ToDoTile> {
   @override
   void initState() {
     super.initState();
-    _isTasksPageCompleted = widget.TasksPagecombleted;
+    _isTasksPageCompleted = widget.tasksPageCompleted;
   }
 
   void _toggleTasksPageCompletion() {
@@ -49,11 +43,8 @@ class _ToDoTileState extends State<ToDoTile> {
             GestureDetector(
               onTap: _toggleTasksPageCompletion,
               child: Text(
-                widget.TasksPageName,
-                style: TextStyle(
-                  color: Colors.black,
-                  decoration: _isTasksPageCompleted ? TextDecoration.lineThrough : TextDecoration.none,
-                ),
+                widget.tasksPageName,
+                style: TextStyle(color: Colors.black, decoration: _isTasksPageCompleted ? TextDecoration.lineThrough : TextDecoration.none),
               ),
             ),
             Row(
@@ -61,7 +52,7 @@ class _ToDoTileState extends State<ToDoTile> {
               children: [
                 const Text(
                   "date",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black)
                 ),
                 IconButton(
                   onPressed: widget.deleteFunction,

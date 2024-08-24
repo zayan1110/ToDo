@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
-import '../../data/database.dart';
-import '../resources/util/dialog_Box.dart';
+import '../../data/todo_database.dart';
+import '../../domain/todo_model.dart';
+import '../widgets/dialog_box.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({super.key});
@@ -12,84 +12,57 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPageState extends State<ToDoPage> {
-  final _myBox = Hive.box('MyBox');
-
-  ToDoDataBase db = ToDoDataBase();
-
-  @override
-  void initState() {
-    if (_myBox.get("TODOLIST") == null) {
-      db.createInitialData();
-    } else {
-      db.loadData();
-    }
-
-    super.initState();
-  }
-
+  final ToDoDatabase db = ToDoDatabase();
   final _controller = TextEditingController();
 
-  void checkBoxChanged(bool? value, int index) {
-    setState(() => db.toDoList[index][1] = !db.toDoList[index][1]);
-    db.updateDataBase();
-  }
+  void saveNewToDo() => {setState(() => db.addToDo(ToDo(name: _controller.text))), _controller.clear(), Navigator.pop(context)};
 
-  void saveNewToDo() {
-    setState(() => db.toDoList.add([_controller.text, false]));
-    Navigator.of(context).pop();
-    _controller.clear();
-
-    db.updateDataBase();
-  }
-
-  void createNewToDo(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => DialogBox(
-        onSave: saveNewToDo,
-        controller: _controller,
-        onCancel: Navigator.of(context).pop,
-      ),
-    );
-  }
-
-  void deleteToDo(int index) {
-    setState(() => db.toDoList.removeAt(index));
-    db.updateDataBase();
-  }
+  void createNewToDo(BuildContext context) => showDialog(
+      context: context, builder: (context) => DialogBox(onSave: saveNewToDo, controller: _controller, onCancel: Navigator.of(context).pop));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.separated(
-        itemCount: 3,
+        itemCount: db.toDos.length,
         padding: const EdgeInsets.all(10),
         separatorBuilder: (_, __) => const SizedBox(height: 10),
-        itemBuilder: (_, index) => ToDoTile(title: index.toString()),
+        itemBuilder: (_, index) => ToDoTile(todo: db.toDos[index]),
       ),
       floatingActionButton: FloatingActionButton(child: const Icon(Icons.add), onPressed: () => createNewToDo(context)),
     );
   }
 }
 
-class ToDoTile extends StatelessWidget {
-  final String title;
-  const ToDoTile({super.key, required this.title});
+class ToDoTile extends StatefulWidget {
+  final ToDo todo;
+  const ToDoTile({required this.todo, super.key});
+
+  @override
+  State<ToDoTile> createState() => _ToDoTileState();
+}
+
+class _ToDoTileState extends State<ToDoTile> {
+  final ToDoDatabase db = ToDoDatabase();
+
+  void checkBoxChanged() => setState(() => {widget.todo.toggleChecked(), db.updateDatabase()});
+
+  TextDecoration? isCheckedLine() => widget.todo.isChecked ? TextDecoration.lineThrough : null;
+
+  IconData isCheckedIcon() => widget.todo.isChecked ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: checkBoxChanged,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer, borderRadius: const BorderRadius.all(Radius.circular(10))),
         child: Row(
           children: [
-            Icon(
-              Icons.check_box_outline_blank_rounded,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
+            Icon(isCheckedIcon(), color: Theme.of(context).colorScheme.onPrimaryContainer),
             const SizedBox(width: 10),
-            Text("Hello World", style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
+            Text(widget.todo.name, style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, decoration: isCheckedLine())),
           ],
         ),
       ),

@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'custom_button.dart';
 
 class DialogBox extends StatelessWidget {
-  final controller;
-  VoidCallback onSave;
-  VoidCallback onCancel;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
+  final TextEditingController controller;
 
-  DialogBox({
-    super.key,
-    required this.controller,
-    required this.onSave,
-    required this.onCancel,
-  });
+  const DialogBox({super.key, required this.onSave, required this.onCancel, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +27,11 @@ class DialogBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                custombutton(text: 'Save', onPressed: onSave),
+                CustomButton(text: 'Save', onPressed: onSave),
                 const SizedBox(
                   width: 8,
                 ),
-                custombutton(text: 'cancel', onPressed: onCancel)
+                CustomButton(text: 'cancel', onPressed: onCancel)
               ],
             )
           ],
