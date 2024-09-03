@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../data/todo_database.dart';
+import '../../constants.dart';
+import '../../data/database.dart';
 import '../../domain/todo_model.dart';
-import '../widgets/dialog_box.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({super.key});
@@ -12,24 +12,17 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPageState extends State<ToDoPage> {
-  final ToDoDatabase db = ToDoDatabase();
-  final _controller = TextEditingController();
-
-  void saveNewToDo() => {setState(() => db.addToDo(ToDo(name: _controller.text))), _controller.clear(), Navigator.pop(context)};
-
-  void createNewToDo(BuildContext context) => showDialog(
-      context: context, builder: (context) => DialogBox(onSave: saveNewToDo, controller: _controller, onCancel: Navigator.of(context).pop));
+  final Database db = Database(AppConstants.toDoBoxKey);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.separated(
-        itemCount: db.toDos.length,
+        itemCount: db.database.length,
         padding: const EdgeInsets.all(10),
         separatorBuilder: (_, __) => const SizedBox(height: 10),
-        itemBuilder: (_, index) => ToDoTile(todo: db.toDos[index]),
+        itemBuilder: (_, index) => ToDoTile(todo: db.database[index]),
       ),
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add), onPressed: () => createNewToDo(context)),
     );
   }
 }
@@ -43,7 +36,7 @@ class ToDoTile extends StatefulWidget {
 }
 
 class _ToDoTileState extends State<ToDoTile> {
-  final ToDoDatabase db = ToDoDatabase();
+  final Database db = Database(AppConstants.toDoBoxKey);
 
   void checkBoxChanged() => setState(() => {widget.todo.toggleChecked(), db.updateDatabase()});
 

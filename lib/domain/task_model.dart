@@ -1,8 +1,8 @@
-import 'task_and_event_model.dart';
+import 'event_or_task_model.dart';
 
-class Task extends TaskAndEvent {
-  final Status status;
-  Task({required this.status, required super.name, required super.date, required super.description});
+class Task extends EventOrTask {
+  // final Status status;
+  Task({required super.title, required super.date, required super.description}); // required this.status,
 }
 
-enum Status { toDo, done, late }
+// enum Status { toDo, done, late }

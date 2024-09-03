@@ -73,7 +73,7 @@ class AppTheme {
       // App Bar
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.backgroundDark,
-        titleTextStyle: TextStyle(fontSize: 22, color: AppColors.secondaryDark),
+        titleTextStyle: TextStyle(fontSize: 22, color: AppColors.secondaryDark, fontWeight: FontWeight.w500),
       ),
 
       // ToDo: Text Theme
@@ -88,6 +88,9 @@ class AppTheme {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
       ),
 
+      // TextField Cursor Color
+      textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.white),
+
       // Tab Bar
       tabBarTheme: const TabBarTheme(
         dividerColor: Colors.transparent,
@@ -95,6 +98,24 @@ class AppTheme {
         indicatorColor: AppColors.greenDark,
         unselectedLabelColor: AppColors.secondaryDark,
         overlayColor: MaterialStatePropertyAll(AppColors.greenDark),
+      ),
+
+      // AlertDialog
+      dialogTheme: const DialogTheme(surfaceTintColor: Colors.transparent, backgroundColor: AppColors.backgroundDark),
+
+      // ElevatedButton
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: AppColors.greenDark,
+        ),
+      ),
+
+      // ListTile
+      listTileTheme: const ListTileThemeData(
+        tileColor: AppColors.primaryDark,
+        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
       ),
     );
   }

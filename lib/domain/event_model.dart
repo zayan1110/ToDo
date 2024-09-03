@@ -1,7 +1,7 @@
-import 'task_and_event_model.dart';
+import 'event_or_task_model.dart';
 
-class Event extends TaskAndEvent {
+class Event extends EventOrTask {
   final DateTime endDate;
 
-  Event({required this.endDate, required super.name, required super.date, required super.description});
+  Event({required super.title, required super.date, required this.endDate, required super.description});
 }
