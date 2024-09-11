@@ -9,9 +9,10 @@ class ToDo extends HiveObject {
 
   @HiveField(1)
   bool isChecked = false;
-  // final ToDoPriority priority;
 
-  ToDo({required this.name});
+  ToDo({
+    required this.name,
+  });
 
   void toggleChecked() => isChecked = !isChecked;
 }

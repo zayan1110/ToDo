@@ -16,7 +16,8 @@ class MainView extends StatefulWidget {
   State<MainView> createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin {
+class _MainViewState extends State<MainView>
+    with SingleTickerProviderStateMixin {
   static late TabController _tabController;
   static final Database db = Database(AppConstants.toDoBoxKey);
   static final TextEditingController _controller = TextEditingController();
@@ -25,12 +26,23 @@ class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin
   void dispose() => {_tabController.dispose(), super.dispose()};
 
   @override
-  void initState() => {_tabController = TabController(length: 3, vsync: this), super.initState()};
+  void initState() => {
+        _tabController = TabController(length: 3, vsync: this),
+        super.initState()
+      };
 
-  void saveNew() => {setState(() => db.addToDatabase(ToDo(name: _controller.text))), _controller.clear(), Navigator.pop(context)};
+  void saveNew() => {
+        setState(() => db.addToDatabase(ToDo(name: _controller.text))),
+        _controller.clear(),
+        Navigator.pop(context)
+      };
 
-  void createNew(BuildContext context) =>
-      showDialog(context: context, builder: (context) => DialogBox(onSave: saveNew, controller: _controller, onCancel: Navigator.of(context).pop));
+  void createNew(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => DialogBox(
+          onSave: saveNew,
+          controller: _controller,
+          onCancel: Navigator.of(context).pop));
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +51,43 @@ class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin
         toolbarHeight: 150,
         // ToDo: Dynamic or Remove
         title: const Text('Good Morning,\nMohamed!'),
-        actions: [IconButton(icon: const Icon(Icons.settings), onPressed: () => Navigator.pushNamed(context, NamedRoutes.settingsScreen))],
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () =>
+                  Navigator.pushNamed(context, NamedRoutes.settingsScreen))
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(100),
           child: Column(
             children: [
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: TextField(decoration: InputDecoration(prefixIcon: Icon(Icons.search_rounded), hintText: 'Search')),
+                child: TextField(
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search_rounded),
+                        hintText: 'Search')),
               ),
               const SizedBox(height: 25),
-              TabBar(controller: _tabController, tabs: const [Tab(text: 'TO DO'), Tab(text: 'Events'), Tab(text: 'Tasks')]),
+              TabBar(controller: _tabController, tabs: const [
+                Tab(text: 'TO DO'),
+                Tab(text: 'Events'),
+                Tab(text: 'Tasks')
+              ]),
             ],
           ),
         ),
       ),
       body: Column(
         children: [
-          Expanded(child: TabBarView(controller: _tabController, children: const [ToDoPage(), EventsPage(), TasksPage()])),
+          Expanded(
+              child: TabBarView(
+                  controller: _tabController,
+                  children: const [ToDoPage(), EventsPage(), TasksPage()])),
         ],
       ),
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add), onPressed: () => createNew(context)),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add), onPressed: () => createNew(context)),
     );
   }
 }

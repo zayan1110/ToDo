@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../data/database.dart';
 import 'events_and_tasks_card.dart';
 
@@ -15,7 +14,17 @@ class _EventsOrTasksPageState extends State<EventsOrTasksPage> {
   late final Database db;
 
   @override
-  void initState() => {db = Database(widget.databaseKey), super.initState()};
+  void initState() {
+    db = Database(widget.databaseKey);
+    super.initState();
+  }
+
+  void _deleteItem(int index) {
+    setState(() {
+      db.database.removeAt(index);
+      db.updateDatabase();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +32,15 @@ class _EventsOrTasksPageState extends State<EventsOrTasksPage> {
       body: GridView.builder(
         itemCount: db.database.length,
         padding: const EdgeInsets.all(20),
-        itemBuilder: (_, index) => EventOrTaskCard(taskOrEvent: db.database[index]),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: .8, crossAxisSpacing: 5),
+        itemBuilder: (_, index) => EventOrTaskCard(
+          taskOrEvent: db.database[index],
+          onDelete: () => _deleteItem(index),
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: .8,
+          crossAxisSpacing: 5,
+        ),
       ),
     );
   }
