@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ToDoTile extends StatefulWidget {
+class TodoTile extends StatefulWidget {
   final String tasksPageName;
   final bool tasksPageCompleted;
   final Function(bool?) onChanged;
   final Function() deleteFunction;
 
-  const ToDoTile({super.key, required this.onChanged, required this.tasksPageName, required this.deleteFunction, required this.tasksPageCompleted});
+  const TodoTile({super.key, required this.onChanged, required this.tasksPageName, required this.deleteFunction, required this.tasksPageCompleted});
 
   @override
-  State<ToDoTile> createState() => _ToDoTileState();
+  State<TodoTile> createState() => _TodoTileState();
 }
 
-class _ToDoTileState extends State<ToDoTile> {
+class _TodoTileState extends State<TodoTile> {
   bool _isTasksPageCompleted = false;
 
   @override
@@ -50,10 +50,7 @@ class _ToDoTileState extends State<ToDoTile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "date",
-                  style: TextStyle(color: Colors.black)
-                ),
+                const Text("date", style: TextStyle(color: Colors.black)),
                 IconButton(
                   onPressed: widget.deleteFunction,
                   icon: const Icon(

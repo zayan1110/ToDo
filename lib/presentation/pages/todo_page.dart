@@ -5,15 +5,19 @@ import '../../constants.dart';
 import '../../data/database.dart';
 import '../../domain/todo_model.dart';
 
-class ToDoPage extends StatefulWidget {
-  const ToDoPage({super.key});
+class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
 
   @override
-  State<ToDoPage> createState() => _ToDoPageState();
+  State<TodoPage> createState() => _TodoPageState();
 }
 
-class _ToDoPageState extends State<ToDoPage> {
-  final Database db = Database(AppConstants.toDoBoxKey);
+class _TodoPageState extends State<TodoPage> {
+  final Database db = Database(AppConstants.TodoBoxKey);
+  static final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() => {_controller.dispose(), super.dispose()};
 
   @override
   Widget build(BuildContext context) {
@@ -22,89 +26,95 @@ class _ToDoPageState extends State<ToDoPage> {
         itemCount: db.database.length,
         padding: const EdgeInsets.all(10),
         separatorBuilder: (_, __) => const SizedBox(height: 10),
-        itemBuilder: (_, index) => ToDoTile(
-          todo: db.database[index],
-          deleteFunction: () => _deleteTodo(index),
-        ),
+        itemBuilder: (_, index) => Slidable(
+            endActionPane: ActionPane(
+              motion: const StretchMotion(),
+              children: [
+                SlidableAction(
+                  icon: Icons.delete,
+                  backgroundColor: Colors.red,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  onPressed: (_) => setState(() => db.removeFromDatabase(db.database[index])),
+                ),
+              ],
+            ),
+            child: TodoTile(todo: db.database[index])),
       ),
+      floatingActionButton: FloatingActionButton(child: const Icon(Icons.add), onPressed: () => createNew(context)),
     );
   }
 
-  void _deleteTodo(int index) {
-    setState(() {
-      db.database.removeAt(index);
-      db.updateDatabase();
-    });
-  }
+  void saveNew() => {db.addToDatabase(Todo(name: _controller.text)), _controller.clear()};
+
+  void createNew(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (context) => SizedBox(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: const ButtonStyle(alignment: Alignment.centerLeft),
+                      child: const Text("Cancel"),
+                    ),
+                    const Text("New To Do"),
+                    TextButton(
+                      style: const ButtonStyle(alignment: Alignment.centerRight),
+                      onPressed: () => {setState(() => saveNew()), Navigator.pop(context)},
+                      child: const Text("Add"),
+                    ),
+                  ],
+                ),
+
+                //
+                TextField(controller: _controller)
+              ],
+            ),
+          ),
+        ),
+      );
 }
 
-class ToDoTile extends StatefulWidget {
-  final ToDo todo;
-  final Function()? deleteFunction;
-
-  const ToDoTile({
-    required this.todo,
-    required this.deleteFunction,
-    super.key,
-  });
+class TodoTile extends StatefulWidget {
+  final Todo todo;
+  const TodoTile({super.key, required this.todo});
 
   @override
-  State<ToDoTile> createState() => _ToDoTileState();
+  State<TodoTile> createState() => _TodoTileState();
 }
 
-class _ToDoTileState extends State<ToDoTile> {
-  final Database db = Database(AppConstants.toDoBoxKey);
+class _TodoTileState extends State<TodoTile> {
+  final Database db = Database(AppConstants.TodoBoxKey);
 
-  void checkBoxChanged() {
-    setState(() {
-      widget.todo.toggleChecked();
-      db.updateDatabase();
-    });
-  }
+  void checkBoxChanged() => setState(() {widget.todo.toggleChecked(); db.updateDatabase();});
 
-  TextDecoration? isCheckedLine() {
-    return widget.todo.isChecked ? TextDecoration.lineThrough : null;
-  }
+  TextDecoration? isCheckedLine() => widget.todo.isChecked ? TextDecoration.lineThrough : null;
 
-  IconData isCheckedIcon() {
-    return widget.todo.isChecked
-        ? Icons.check_box_rounded
-        : Icons.check_box_outline_blank_rounded;
-  }
+  IconData isCheckedIcon() => widget.todo.isChecked ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: checkBoxChanged,
-      child: Slidable(
-        endActionPane: ActionPane(motion: const StretchMotion(), children: [
-          SlidableAction(
-            onPressed: (_) => widget.deleteFunction?.call(),
-            icon: Icons.delete,
-            backgroundColor: Colors.red,
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ]),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-          ),
-          child: Row(
-            children: [
-              Icon(isCheckedIcon(),
-                  color: Theme.of(context).colorScheme.onPrimaryContainer),
-              const SizedBox(width: 10),
-              Text(
-                widget.todo.name,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  decoration: isCheckedLine(),
-                ),
-              ),
-            ],
-          ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Row(
+          children: [
+            Icon(isCheckedIcon(), color: Theme.of(context).colorScheme.onPrimaryContainer),
+            const SizedBox(width: 10),
+            Text(
+              widget.todo.name,
+              style: TextStyle(decoration: isCheckedLine(), color: Theme.of(context).colorScheme.onPrimaryContainer),
+            ),
+          ],
         ),
       ),
     );

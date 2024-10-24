@@ -5,4 +5,4 @@ class Task extends EventOrTask {
   Task({required super.title, required super.date, required super.description}); // required this.status,
 }
 
-// enum Status { toDo, done, late }
+// enum Status { Todo, done, late }

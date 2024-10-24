@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
-import 'package:todo_app/constants.dart';
-import 'package:todo_app/domain/event_model.dart';
-import 'package:todo_app/domain/task_model.dart';
 
+import '../constants.dart';
+import '../domain/event_model.dart';
+import '../domain/task_model.dart';
 import '../domain/todo_model.dart';
 
 class Database {
@@ -11,13 +11,12 @@ class Database {
   final String _databaseKey;
 
   Database(this._databaseKey) {
-    _box = Hive.box(_databaseKey);
-    database = _box.get(_databaseKey, defaultValue: _defaultValue());
+    [_box = Hive.box(_databaseKey), database = _box.get(_databaseKey, defaultValue: _defaultValue())];
   }
 
   List _defaultValue() => [
         switch (_databaseKey) {
-          AppConstants.toDoBoxKey => ToDo(name: "Add a New To Do Now!"),
+          AppConstants.TodoBoxKey => Todo(name: "Add a New To Do Now!"),
           AppConstants.taskBoxKey => Task(title: "Task", date: DateTime.now(), description: "description"),
           AppConstants.eventBoxKey => Event(title: "Event", date: DateTime.now(), endDate: DateTime.now(), description: "description"),
           _ => null

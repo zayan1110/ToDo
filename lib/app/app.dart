@@ -9,10 +9,15 @@ class NoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Theme
       themeMode: ThemeMode.dark,
       theme: AppTheme.getLightMode(),
       darkTheme: AppTheme.getDarkMode(),
+
+      //
       debugShowCheckedModeBanner: false,
+
+      // Routes
       initialRoute: NamedRoutes.mainView,
       onGenerateRoute: RouteGenerator.getRoute,
     );

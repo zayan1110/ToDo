@@ -26,7 +26,7 @@ class AppTheme {
         titleTextStyle: TextStyle(fontSize: 22, color: AppColors.backgroundLight),
       ),
 
-      // ToDo: Text Theme
+      // Todo: Text Theme
       textTheme: const TextTheme(),
 
       // Text Field
@@ -76,7 +76,7 @@ class AppTheme {
         titleTextStyle: TextStyle(fontSize: 22, color: AppColors.secondaryDark, fontWeight: FontWeight.w500),
       ),
 
-      // ToDo: Text Theme
+      // Todo: Text Theme
       textTheme: const TextTheme(),
 
       // Text Field
@@ -84,8 +84,9 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.primaryDark,
         prefixIconColor: AppColors.secondaryDark,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         hintStyle: const TextStyle(color: AppColors.secondaryDark),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
       ),
 
       // TextField Cursor Color
@@ -102,6 +103,20 @@ class AppTheme {
 
       // AlertDialog
       dialogTheme: const DialogTheme(surfaceTintColor: Colors.transparent, backgroundColor: AppColors.backgroundDark),
+
+      // BottomSheet
+      bottomSheetTheme: const BottomSheetThemeData(
+        surfaceTintColor: Colors.transparent,
+        modalBackgroundColor: AppColors.black,
+      ),
+
+      // TextButton
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          foregroundColor: AppColors.primary,
+        ),
+      ),
 
       // ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
